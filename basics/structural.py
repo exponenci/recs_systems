@@ -1,19 +1,12 @@
-import numpy as np
-import pandas as pd
-
-import scipy.sparse as sparse
-from sklearn.preprocessing import MinMaxScaler
-from sklearn.feature_extraction.text import TfidfVectorizer
-
-from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
-from nltk.corpus import stopwords
-
+import scipy.sparse as sparse   # for sparse matrix
 
 import loaders
 
 
 class RecommendationSystem:
+    """
+    Root-class representing recommendation system
+    """
     def __init__(self):
         pass
 
@@ -28,7 +21,12 @@ class RecommendationSystem:
 
 
 class CollaborativeFiltering(RecommendationSystem):
+    """
+    TODO checkout and comment this class
+    Represents recommendation system based on collaborative-filtering
+    """
     def __init__(self):
+        super(CollaborativeFiltering, self).__init__()
         # sparse matrix of implicit user-item interactions
         self.sparse_matrix = None
         # users matrix in lower rank
@@ -44,7 +42,6 @@ class CollaborativeFiltering(RecommendationSystem):
         # column names in database corresponding to user and item
         self.user_cname = None
         self.item_cname = None
-        super(CollaborativeFiltering, self).__init__()
 
     def load(self,
              table: str,
@@ -139,12 +136,15 @@ class CollaborativeFiltering(RecommendationSystem):
 
 
 class ContentBasedFiltering(RecommendationSystem):
+    """
+    Represents recommendation system based on content-based-filtering
+    """
     def __init__(self,
                  stemmer):
         super(ContentBasedFiltering, self).__init__()
-        # russian words stemmer
+        # using stemmer
         self.stemmer = stemmer
-        # similarity matrix
+        # similarity matrix (items_count x items_count)
         self.df_data = None
         # item-representing and content columns names
         self.item_id_cname = None
@@ -157,6 +157,21 @@ class ContentBasedFiltering(RecommendationSystem):
              content_columns: list,
              loader_type: str = "csv",
              connection=None):
+        """
+        :param table: table name where from data will be read (this
+            either table of database or path to csv file, depending
+            on loader_typ)
+        :param item_id_cname: item-representing-column's name
+        :param content_cname: content-representing-column's name
+        :param content_columns: columns, which contents will be used
+            to build model
+        :param loader_type: equals either to "csv" or "db", depending
+            on `table`
+        :param connection: if loader_type equals to db, it must be
+            connection to using database (otherwise - whatever)
+
+        Loads data necessary to build model
+        """
         self.item_id_cname = item_id_cname
         self.content_cname = content_cname
         if loader_type == "csv":

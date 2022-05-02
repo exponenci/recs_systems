@@ -1,11 +1,7 @@
-import pandas as pd
-from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from nltk.corpus import stopwords
-import scipy.sparse as sparse
 import numpy as np
 
-import structural
+from basics import structural
 
 
 class ComplementItemRS(structural.CollaborativeFiltering):

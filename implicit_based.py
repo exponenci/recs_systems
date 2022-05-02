@@ -3,7 +3,7 @@ import numpy as np
 import scipy.sparse as sparse
 from sklearn.preprocessing import MinMaxScaler
 
-import structural
+from basics import structural
 
 
 class ImplicitRS(structural.CollaborativeFiltering):
